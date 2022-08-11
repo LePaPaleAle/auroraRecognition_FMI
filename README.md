@@ -21,4 +21,7 @@ in Crystal. Otherwise, a user would have to manually run the command "python3 ge
 that I've been using in my personal Crystal folder can also be found from the repository and also the instructions
 for creating the conda environment in Crystal and the package requirements in order for the codes to work.
 
+Note! Everything necesary for the aurora recognition is found in the auroraRecognition folder.
+Other folders contain files for other projects not necessary for the aurora recognition.
+
 
