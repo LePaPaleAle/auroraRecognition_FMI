@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+
+<!-- The head and body of the page has essentially been just copied from 
+https://space.fmi.fi/image/realtime/SSA/r-index/ and the main focus for this page has just been in
+implementing the necessary functionality. Please feel free to adjust the outlook (and of course functionality)
+of the page! -->
+
+<head>
+    <meta charset="utf-8" content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <script src="/image/realtime/SSA/r-index/js/plotly.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/image/realtime/SSA/r-index/css/tailwind.css">
+    <title>Aurora Recognition</title>
+</head>
+
+<style>
+.button {
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding:  15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+</style>
+<body>
+    <header>
+        <img class="w-100px mr-2" src="/image/realtime/SSA/r-index/img/il-logo-fmi-rgb.svg" alt="Logo FMI">
+        <nav aria-label="Main">
+            <button class="menubutton discbutton" aria-label="Open menu" aria-controls="pagination">
+                <span class="btncontent" tabindex="-1">
+                    <svg height=40 class="stroke-current text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </span>
+            </button>
+
+            <ul id="pagination" class="navbar list-none">
+
+                <li>
+                    <a href="/image/realtime/SSA/ssa_fmi.php">All FMI products</a>
+		</li>
+
+                <li>
+                    <a href="/image/realtime/SSA/r-index/information/" >About</a>
+                </li>
+
+                <li>
+                    <a href="/image/realtime/SSA/r-index/acknowledgements/" >Acknowledgements</a>
+                </li>
+
+                <li>
+                    <a href="Hoppe_Theresa_GFP2022.pdf" >References</a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+    <main role="main">
+
+
+<!-- A couple of functions that are used to change the paths connected to different buttons
+and images so that we can change between the Kevo and Muonio station. I am a html noob
+and just made the functions with the necessary functionality in mind :D. So again, a prettier
+solution is welcome -->
+
+<script>
+  function KEV_function() {
+  // Get the elements that represent the tar-packages, statlists, image and the camera status
+    auroraTarPackage = document.getElementById("auroraTarPackage");
+    noAuroraTarPackage = document.getElementById("noAuroraTarPackage");
+    auroraStats = document.getElementById("auroraStatsFile");
+    noAuroraStats = document.getElementById("noAuroraStatsFile");
+    latestImage = document.getElementById("latestImage");
+    cameraStatus = document.getElementById("cameraStatus");
+    cameraStatusFile = document.getElementById("cameraStatusFile")    
+
+  // Change the paths for each element so that the data from Kevo is collected
+  // Also change names/texts in the elements that are visible for the user
+    auroraTarPackage.href = "KEV/aurora/aurora_KEV.tar.gz";
+    auroraTarPackage.innerHTML = "Download last night aurora images from Kevo";
+    noAuroraTarPackage.href = "KEV/no-aurora/no-aurora_KEV.tar.gz";
+    noAuroraTarPackage.innerHTML = "Download last night no-aurora images from Kevo";
+    auroraStats.href = "KEV/stats/current_month_aurora_images_KEV.txt";
+    auroraStats.innerHTML = "Download list of aurora times from current month at Kevo";
+    noAuroraStats.href = "KEV/stats/current_month_no_aurora_images_KEV.txt";
+    noAuroraStats.innerHTML = "Download list of no-aurora times from current month at Kevo";
+    latestImage.src = "KEV/latest_KEV.png";
+    cameraStatus.innerHTML = "<h2>Kevo Camera Status:</h2>";
+    cameraStatusFile.data = "KEV/KEV_status.html";
+  }
+
+  function MUO_function() {
+  // Get the elements that represent the tar-packages, statlists, image and the camera status
+    auroraTarPackage = document.getElementById("auroraTarPackage");
+    noAuroraTarPackage = document.getElementById("noAuroraTarPackage");
+    auroraStats = document.getElementById("auroraStatsFile");
+    noAuroraStats = document.getElementById("noAuroraStatsFile");
+    latestImage = document.getElementById("latestImage");
+    cameraStatus = document.getElementById("cameraStatus");
+    cameraStatusFile = document.getElementById("cameraStatusFile");
+    
+  // Change the paths for each element so that the data from Muonio is collected
+  // Also change names/texts in the elements that are visible for the user
+
+    auroraTarPackage.href = "MUO/aurora/aurora_MUO.tar.gz";
+    auroraTarPackage.innerHTML = "Download last night aurora images from Muonio";
+    noAuroraTarPackage.href = "MUO/no-aurora/no-aurora_MUO.tar.gz";
+    noAuroraTarPackage.innerHTML = "Download last night no-aurora images from Muonio";
+    auroraStats.href = "MUO/stats/current_month_aurora_images_MUO.txt";
+    auroraStats.innerHTML = "Download list of aurora times from current month at Muonio";
+    noAuroraStats.href = "MUO/stats/current_month_no_aurora_images_MUO.txt";
+    noAuroraStats.innerHTML = "Download list of no-aurora times from current month at Muonio";
+    latestImage.src = "MUO/latest_MUO.png";
+    cameraStatus.innerHTML = "<h2>Muonio Camera Status:</h2>";
+    cameraStatusFile.data = "MUO/MUO_status.html";
+  }
+</script>
+
+<!--Initialize the dropdown menu that lets the user choose between Kevo and Muonio.
+Set the onclick-property to run the functions mentioned above.-->
+
+<label for="asc stations">Choose ASC station:</label>
+<select name="asc stations" id="asc stations">
+  <option value="KEV" onclick="KEV_function()">Kevo</option>
+  <option value="MUO" onclick="MUO_function()">Muonio</option>
+</select>
+
+<br>
+
+<!-- Initialize the elements of the page.-->
+
+<figure>
+  <img id="latestImage" src="KEV/latest_KEV.png">
+</figure>
+
+<br>
+
+<div id="cameraStatus"> <h2>Kevo Camera Status:</h2></div>
+
+<object id="cameraStatusFile" data="KEV/KEV_status.html"></object>
+
+<br>
+
+<a id="auroraTarPackage" href="KEV/aurora_KEV.tar.gz" class="button" download>Download last night aurora images from Kevo
+</a>
+
+<a id="noAuroraTarPackage" href="KEV/no-aurora_KEV.tar.gz" class="button" download>Download last night no-aurora images from Kevo
+</a>
+
+<a id="auroraStatsFile" href="KEV/stats/current_month_aurora_images_KEV.txt" class="button" download>Download list of aurora times from current month at Kevo
+</a>
+
+<a id="noAuroraStatsFile" href="KEV/stats/current_month_no_aurora_images_KEV.txt" class="button" download>Download list of no-aurora times from current month at Kevo
+</a>
+
+    </main>
+
+</body>
+
+</html>
