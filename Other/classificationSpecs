@@ -1,0 +1,79 @@
+Kevo classification specs
+Threshold: 5000
+
+    green_mask = (R < G) & (R >= B) & (G > B) & (L > 0.4) & (L <= 0.98) & \
+                 ((R - G) < -0.01) & ((R - B) > 0.01) & ((G - B) > 0.01)
+
+    cyan_mask = (R < G) & (R <= B) & (G > B) & (L > 0.4) & (L <= 0.98) & \
+                ((R - G) < -0.01) & ((R - B) < -0.01) & ((G - B) > 0.01)
+
+    red_mask_1 = (R > G) & (R > B) & (G >= B) & (L >= 0.45) & (L <= 0.85) & \
+                 ((R - G) > 0.01) & (R - B > 0.18) & ((G - B) > 0.018)
+
+    red_mask_2 = (R > G) & (R > B) & (G <= B) & (L >= 0.45) & (L <= 0.85) & \
+                 ((R - B) > 0.015)
+
+    purple_mask = (R >= G) & (R <= B) & (G <= B) & (L > 0.5) & (L <= 0.9) & \
+                  ((R - G) > 0.03) & ((R - B) < -0.12) & ((G - B) < -0.15)
+
+    cloud_mask = (L < 0.85) & \
+                 (((-0.01 <= (R - G)) & ((R - G) <= 0.01)) |
+                 ((-0.01 <= (R - B)) & ((R - B) <= 0.01)) |
+                 ((-0.01 <= (G - B)) & ((G - B) <= 0.01)))
+
+    coloredImage[green_mask] = colors[0]
+    classifiedImage[green_mask] = 1
+    handles.append(patches.Patch(color=colors[0] / 255., label='Green Aurora'))
+
+    coloredImage[cyan_mask] = colors[3]
+    classifiedImage[cyan_mask] = 1
+    handles.append(patches.Patch(color=colors[3] / 255., label='Cyan'))
+
+    coloredImage[red_mask_1] = colors[1]
+    classifiedImage[red_mask_1] = 1
+    handles.append(patches.Patch(color=colors[1] / 255., label='Red Aurora 1'))
+
+    coloredImage[red_mask_2] = colors[5]
+    classifiedImage[red_mask_2] = 1
+    handles.append(patches.Patch(color=colors[5] / 255., label='Red Aurora 2'))
+
+    coloredImage[purple_mask] = colors[2]
+    classifiedImage[purple_mask] = 1
+    handles.append(patches.Patch(color=colors[2] / 255., label='Purple Aurora'))
+
+    coloredImage[cloud_mask] = colors[4]
+    classifiedImage[cloud_mask] = 0
+    handles.append(patches.Patch(color=colors[4] / 255., label='Cloud'))
+    
+    
+Muonio classification specs
+Threshold: 3500
+    green_mask = (R < G) & (R >= B) & (G > B) & (L > 0.15) & (L <= 0.98) & \
+                 ((R - G) <= -0.01) & ((R - B) >= 0.01) & ((G - B) >= 0.01)
+
+    cyan_mask = (R < G) & (R <= B) & (G > B) & (L > 0.15) & (L <= 0.98) & \
+                ((R - G) <= -0.01) & ((R - B) <= -0.01) & ((G - B) >= 0.01)
+
+    cloud_mask = (L <= 0.95) & \
+                 (((-0.01 < (R - G)) & ((R - G) < 0.01)) |
+                 ((-0.01 < (R - B)) & ((R - B) < 0.01)) |
+                 ((-0.01 < (G - B)) & ((G - B) < 0.01)))
+
+    yellow_cloud_mask = (R > G) & (R > B) & (G > B) & (L > 0.3) & \
+                        ((R - G) > 0) & ((R - B) > 0.1) & ((G - B) > 0.1)
+                        
+    coloredImage[cloud_mask] = colors[4]
+    classifiedImage[cloud_mask] = 0
+    handles.append(patches.Patch(color=colors[4] / 255., label='Cloud'))
+
+    coloredImage[yellow_cloud_mask] = colors[6]
+    classifiedImage[yellow_cloud_mask] = 0
+    handles.append(patches.Patch(color=colors[6] / 255., label='Saturated Cloud'))
+    
+    coloredImage[green_mask] = colors[0]
+    classifiedImage[green_mask] = 1
+    handles.append(patches.Patch(color=colors[0] / 255., label='Green Aurora'))
+
+    coloredImage[cyan_mask] = colors[3]
+    classifiedImage[cyan_mask] = 1
+    handles.append(patches.Patch(color=colors[3] / 255., label='Cyan'))
